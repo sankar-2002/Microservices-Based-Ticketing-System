@@ -1,6 +1,7 @@
 import { StateOverride } from './../node_modules/@types/whatwg-url/index.d';
 import { json } from "body-parser";
 import mongoose from "mongoose";
+import cookieSession from 'cookie-session';
 import { currentUserRouter } from "./routes/current-user";
 import { signupRouter } from "./routes/signup";
 import { signinRouter } from "./routes/signin";
@@ -10,6 +11,14 @@ import { NotFoundError } from "./errors/not-found-error";
 import express, { Request, Response, NextFunction } from "express";
 import 'express-async-errors';
 const app = express();
+
+app.set('trust proxy', true); //this is for ingress-nginx to work with express
+app.use(cookieSession({
+  signed: false,
+  secure: false, //set to true if using https
+}));
+
+
 app.use(json());
 
 app.use(currentUserRouter);
@@ -33,6 +42,10 @@ app.use(errorHandler);
 
 
 const start = async () => {
+  if(!process.env.JWT_KEY) {
+    throw new Error('JWT_KEY must be defined');
+  }
+  
   try {
     await mongoose.connect('mongodb://auth-mongo-srv:27017/auth', {}); 
     console.log("Connected to MongoDB");
