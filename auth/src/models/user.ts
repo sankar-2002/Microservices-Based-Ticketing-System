@@ -23,6 +23,17 @@ interface UserDoc extends mongoose.Document {
 const userSchema = new mongoose.Schema({
   email: {  type: String, required: true },
   password: { type: String, required: true },
+}, {
+
+  toJSON: {
+    transform(doc, ret) { //*** this is a method that transforms the user document before sending it to the client ***
+      ret.id = ret._id; // add the id property to the user document
+      delete ret._id; // delete the _id property from the user document
+      delete ret.password; // delete the password property from the user document
+      delete ret.__v; // delete the __v property from the user document
+    }
+  }
+
 });
 
 userSchema.pre('save', async function(done) { //this is a middleware that runs before saving the user document to the database
