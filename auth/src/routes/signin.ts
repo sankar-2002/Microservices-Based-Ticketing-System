@@ -21,6 +21,7 @@ router.post('/api/users/signin', [
 ], validateRequest, //this is a middleware function that checks if there are any validation errors in the request
  async (req: Request , res: Response) => {
     const { email, password } = req.body;
+    
     const existingUser = await User.findOne({ email });
 
     if (!existingUser) {
@@ -49,7 +50,7 @@ router.post('/api/users/signin', [
     };
     // this is the session object that is used to store the JWT token
 
-    res.status(201).send(existingUser);
+    res.status(200).send(existingUser);
 
 
     

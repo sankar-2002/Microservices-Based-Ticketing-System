@@ -1,38 +1,5 @@
-import { StateOverride } from './../node_modules/@types/whatwg-url/index.d';
-import { json } from "body-parser";
 import mongoose from "mongoose";
-import cookieSession from 'cookie-session';
-import { currentUserRouter } from "./routes/current-user";
-import { signupRouter } from "./routes/signup";
-import { signinRouter } from "./routes/signin";
-import { signoutRouter } from "./routes/signout";
-import { errorHandler } from "./middleware/error-handler";
-import { NotFoundError } from "./errors/not-found-error";
-import express, { Request, Response, NextFunction } from "express";
-import 'express-async-errors';
-const app = express();
-
-app.set('trust proxy', true); //this is for ingress-nginx to work with express
-app.use(cookieSession({
-  signed: false,
-  secure: false, //set to true if using https
-}));
-
-
-app.use(json());
-
-app.use(currentUserRouter);
-app.use(signupRouter);
-app.use(signinRouter);
-app.use(signoutRouter);
-
-
-app.all('*', async (req, res) => {
-  throw new NotFoundError();
-});
-
-
-app.use(errorHandler);
+import { app } from "./app";
 
 //for running ingress host on localhost
 //configure your hostname(anything) on your system in 
