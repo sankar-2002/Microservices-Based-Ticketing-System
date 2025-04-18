@@ -6,7 +6,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
-import { currentUser } from '../middleware/current-user';
+import { currentUser } from '@grstickets/common'; // Importing the currentUser middleware from the common package
 
 const router = express.Router();
 

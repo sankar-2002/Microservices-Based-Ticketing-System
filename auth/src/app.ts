@@ -5,8 +5,8 @@ import { currentUserRouter } from "./routes/current-user";
 import { signupRouter } from "./routes/signup";
 import { signinRouter } from "./routes/signin";
 import { signoutRouter } from "./routes/signout";
-import { errorHandler } from "./middleware/error-handler";
-import { NotFoundError } from "./errors/not-found-error";
+import { errorHandler } from "@grstickets/common";
+import { NotFoundError } from "@grstickets/common";
 import express, { Request, Response, NextFunction } from "express";
 
 const app = express();
