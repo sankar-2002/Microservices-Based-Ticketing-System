@@ -2,6 +2,8 @@ import 'express-async-errors'; //always keep this at the top of the file to hand
 import { json } from "body-parser";
 import cookieSession from 'cookie-session';
 import { createTicketRouter } from './routes/new';
+import { showTicketRouter } from './routes/show';
+import { indexTicketRouter } from './routes/index';
 import { errorHandler } from "@grstickets/common";
 import { NotFoundError } from "@grstickets/common";
 import { currentUser } from "@grstickets/common";
@@ -17,6 +19,8 @@ app.use(cookieSession({
 }));
 app.use(currentUser); //this is for the current user middleware to work with express
 app.use(createTicketRouter); // Route handlers after middleware setup
+app.use(showTicketRouter); // Route handlers after middleware setup
+app.use(indexTicketRouter);
 
 app.all('*', async (req, res) => {
   throw new NotFoundError();
