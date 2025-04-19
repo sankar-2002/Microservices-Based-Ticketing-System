@@ -4,6 +4,7 @@ import cookieSession from 'cookie-session';
 import { createTicketRouter } from './routes/new';
 import { showTicketRouter } from './routes/show';
 import { indexTicketRouter } from './routes/index';
+import { updateTicketRouter } from './routes/update';
 import { errorHandler } from "@grstickets/common";
 import { NotFoundError } from "@grstickets/common";
 import { currentUser } from "@grstickets/common";
@@ -21,6 +22,7 @@ app.use(currentUser); //this is for the current user middleware to work with exp
 app.use(createTicketRouter); // Route handlers after middleware setup
 app.use(showTicketRouter); // Route handlers after middleware setup
 app.use(indexTicketRouter);
+app.use(updateTicketRouter); // Route handlers after middleware setup
 
 app.all('*', async (req, res) => {
   throw new NotFoundError();
