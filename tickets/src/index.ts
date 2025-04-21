@@ -24,6 +24,14 @@ const start = async () => {
       'randomId', //this should be unique for each instance of a service
       'http://nats-srv:4222' //this is the service name and port in the k8s cluster
     );
+    natsWrapper.client.on('close', () => {
+      console.log('NATS connection closed!');
+      process.exit();
+    });
+    
+    process.on('SIGINT', () => natsWrapper.client.close());
+    process.on('SIGTERM', () => natsWrapper.client.close());
+
     await mongoose.connect(process.env.MONGO_URI, {}); 
     console.log("Connected to MongoDB");
   } catch (err) {
