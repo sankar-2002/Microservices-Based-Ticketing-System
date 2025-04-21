@@ -17,12 +17,24 @@ const start = async () => {
   if(!process.env.MONGO_URI) {
     throw new Error('MONGO_URI must be defined');
   }
+
+  if(!process.env.NATS_CLIENT_ID) {
+    throw new Error('NATS_CLIENT_ID must be defined');
+  }
+
+  if(!process.env.NATS_URL) {
+    throw new Error('NATS_URL must be defined');
+  }
+
+  if(!process.env.NATS_CLUSTER_ID) {
+    throw new Error('NATS_CLUSTER_ID must be defined');
+  }
   
   try {
     await natsWrapper.connect(
-      'ticketing',
-      'randomId', //this should be unique for each instance of a service
-      'http://nats-srv:4222' //this is the service name and port in the k8s cluster
+      process.env.NATS_CLUSTER_ID, //this should be the same as the one in the k8s cluster
+      process.env.NATS_CLIENT_ID, //this should be the same as the one in the k8s cluster
+      process.env.NATS_URL, //this should be the same as the one in the k8s cluster
     );
     natsWrapper.client.on('close', () => {
       console.log('NATS connection closed!');
